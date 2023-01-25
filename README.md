@@ -1,4 +1,5 @@
-# printf
+ ## ALX printf Project
+
 This a repository for the ALX team project for the printf.
 
 The printf() function prints output to stdout, according to format and other arguments passed to printf(). 
@@ -7,6 +8,7 @@ and format commands that define how the other arguments to printf() are displaye
 you specify a format string that has text in it, as well as "special" characters
 that map to the other arguments of printf().
 
+---
 
 The prototype of this function is: int _printf(const char format, ...);
 
@@ -27,7 +29,7 @@ An optional precision modifier
 An optional length modifier
 
 
-## **Synopsis**
+ ## **Synopsis**
 
 The function _printf() writes output to stdout, the standard output stream with the format and options presented below. It uses an internal buffer of 1024 bytes although it can print larger sets of data.
 
@@ -56,7 +58,7 @@ Each conversion specification is introduced by the character **%** and ends with
 > An optional **length** modifier
 
 
-**The flag characters**
+# **The flag characters**
 
 |**Flag**| Description  |
 |--|--|
@@ -66,7 +68,7 @@ Each conversion specification is introduced by the character **%** and ends with
 |' '| (Blank Space) The argument is padded with a single blank space before a positive number or empty string produced by a signed conversion.|
 |**+**| A sign (+ or -) should always be placed before a number produced with a signed conversion.  By default, only negative numbers have this sign.|
 
-**The field width**
+# **The field width**
 
 An  optional decimal digit string (with nonzero first digit) specifying a minimum field width.  If  the  converted  value  has  fewer characters  than  the field width, it will be padded with spaces on the left if the flag - is not present, and on the right  if  it  is present.  A character * can be used instead of a decimal string. In this case, an argument passed to the function will be taken as  the width value.
 
@@ -108,6 +110,7 @@ or
 |**r**|The  argument received is expected to be a pointer type char * to an array of characters.  Characters from this array are printed in reverse order up to (but not including) a null byte  ('\0').  |
 |**R**|The argument received is expected to be a pointer type char * to an array of characters.  Characters from this array  are  encoded  to  ROT13  and printed in order up to (but not including a null byte  ('\0').  |
 
+---
 
 /* This header is mandatory for the function to run */
     #include "main.h"
@@ -157,7 +160,7 @@ or
          return (0);
     }
 
-**Compilation:**
+--- # **Compilation:**
 
 When you are done creating you *main.c* file  you will need to compile it. You can use any compiler software you like, although this project was tested in GNU GCC 5.5.0 with different error flags such as:
 
@@ -173,7 +176,7 @@ When you are done creating you *main.c* file  you will need to compile it. You c
 
     test@ubuntu:~/printf$ gcc -Wall -Wextra -Werror -pedantic -Wno-format *.c
 
-**Execution:**
+# **Execution:**
 
     test@ubuntu:~/printf$ ./a.out
 
