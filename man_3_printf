@@ -1,280 +1,87 @@
-.TH _PRINTF 26 "January 2023" "Alx School" "Linux Programmers Manual"
+.TH _printf 1 "January 26, 2023" "version 1.0" "_printf man page"
 .SH NAME
-_printf - formatted output conversion with number of bytes printed as return
+_printf - format and print data
 .SH SYNOPSIS
+#include <unistd.h> <stdarg.h> <stdlib.h> "main.h"
 
-Printf is a variadic function with one mandatory argument format and extra arguments that can be none at all or many.
-
-Its inclusion requires the header\ "main.h".
-
-.B #include \ "main.h"
-
-Its prototype goes as follows:
-
-.B int _printf(const char *format, ...);
+int printf(const char *format, ...);
 
 .SH DESCRIPTION
+function that produces output according to a format.  Writes the output under the control of a format string that specifies how subsequent arguments (or arguments accessed via the variable-length argument facilities of stdarg(3)) are converted for output.  Execute according to option:
 
-The function _printf() writes output to stdout, the standard output stream with
-the format and options presented below. It uses an internal buffer of 1024 bytes
-although it can print larger sets of data.
-.TP
-.BR Return
-
-Upon succesful execution, this function returns the the number of characters printed (excluding the null byte used to end output to strings).
-
-If an output error is encountered, a negative value of -1 is returned.
-
-.TP
-\fBFormat of the format string\fR
-
-The format string is a character string starting and ending with double quotes. The format string is composed of zero or more directives; ordinary characters (not %), 
-which are copied unchanged to the output stream; and conversion specifications, each of which results in fetching zero or more subsequent arguments. Each conversion
-specification is introduced by character % and ends with a \fIconversion specifier\fR. In between there may be (in this order) zero or more \fIflags\fR, an optional field width, an optional \fIprecision\fR modifier and an optional \fIlength modifier\fR.
-
-The arguments must correspond properly with the conversion specifier. By default 
-the arguments are used in the order given, where each '*' and each conversion specifier
-asks for the next argument (and it is an error if insufficiently arguments are given). Thus
-
-     printf("%d", argument);
-
-.TP
-\fBThe flag Characters\fR
-
+.I
+.SS CONVERSION SPECIFIERS:
 .RS
-The character % is followed by zero or the following flags.
 
-.IP \fB#\fR
-For \fBo\fR conversions the first character of the output string is made zero (by prefixing a 0 if it was not zero already).
-For \fBx\fR and \fBX\fR conversions, a nonzero result has the string "0x" or "0X" respectively added.
+A character that specifies the type of conversion to be applied. The conversion specifiers and their meanings are:
 
-.IP \fB0\fR
-(Not implemented yet) The value should be zero padded. For \fBd\fR, \fBi\fR, \fBo\fR, \fBu\fR, \fBx\fR, and \fBX\fR 
-the converted value is padded on the left with zeros. If the \fB0\fR and \fB-\fR flags both appear, 
-the \fB0\fR flag is ignored. If a precision is given with a numeric conversion, the \fB0\fR flag is ignored.
+.IP d,i
+Decimal signed integer. The int argument is converted to signed decimal notation. 
 
-.IP \fB-\fR
-(Minus sign, not implemented yet) The converted value is to be left adjusted on the field boundary, (Default is right 
-justification) and padded with blanks in the right rather than on the left with blanks 
-or zeros. This flag overrides \fB0\fR if both are given.
+.IP c
+Character. The int argument is converted to an unsigned char, and the resulting character is written.
 
-.IP\fB\ '\fR\ \fB\ '\fR
-(Blank Space) The argument is padded with a single blank space before a positive number 
-or empty string produced by a signed conversion.
+.IP s
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but not including) a terminating null byte ('\0').
 
-.IP \fB+\fR
-A sign (+ or -) should always be placed before a number produced with a signed conversion.
-By default, only negative numbers have this sign.
+.IP o,u,x,X
+The unsigned int argument is converted to unsigned octal (o), unsigned decimal (u), or unsigned hexadecimal (x and X) notation. The letters abcdef are used for x conversions; the letters ABCDEF are used for X conversions.
 
+.IP p
+The void * pointer argument is printed in hexadecimal (as if by %#x or %#lx).
 
-.RE
-.TP
-\fBThe field width\fR
-
-An optional decimal digit string (with nonzero first digit) specifying a minimum field width.
-If the converted value has fewer characters than the field width, it will be padded with
-spaces on the left if the flag \fB-\fR is not present, and on the right if it is present.
-A character \fB*\fR can be used instead of a decimal string. In this case, an argument passed to 
-the function will be taken as the width value.
-
-  printf("%5d", num);
-
-  or
-
-  printf("%*d", width, num);
-
-
-.TP
-\fBThe precision\fR
-
-An  optional  precision,  in  the  form  of a period ('.') followed by an optional decimal digit string.
-A negative precision is taken as if the precision were omitted. This gives the minimum number of digits to 
-appear for d, i, o, u, x, and X conversions,  or the  maximum  number of characters to be printed from a string for s and S conversions. A character
-* can be used instead of a  decimal string. In this case, an argument passed to the function will be taken as the precision value.
-
-  printf("%.3d", num);
-
-  or
-
-  printf("%.*d", precision, num);
-
-
-.TP
-\fBThe length modifier\fR
-
+.I
+.SS CUSTOM CONVERSION SPECIFIERS
 .RS
-.IP \fBl\fR
-An integer conversion to a \fIlong int\fR or \fIunsigned long int\fR argument.
 
-.IP \fBh\fR
-An integer conversion to a \fIshort int\fR or \fIunsigned short int\fR argument.
+.IP b
+Decimal signed integer. The int argument is converted to binary notation.
+
+.IP r
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but n\ot including) a terminating null byte ('\0') in reverse order.
 
 
-.RE
-.TP
-\fBThe  conversion specifier\fR
+.IP R
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but n\
+\ot including) a terminating null byte ('\0') in ROT13 format.
 
-A character that specifies the type of conversion to be applied, as follows:
 
+.SH RETURN VALUE
 .RS
-.IP \fBd,\ i\fR
-The argument \fIint\fR is converted to a signed decimal notation. If precision is present,
-it gives the minimum number of digits that must appear; if the converted value requires
-fewer digits, then it is padded with zeros on the left. Default precision is 1.
+Upon successful return, these functions return the number of characters printed (excluding the null byte used to end output to strings).
 
-.IP \fBo,\ u,\ x,\ X\fR
-
-The argument is converted to unsigned octal (\fBo\fR), unsigned decimal (\fBu\fR), 
-or unsigned hexamedical (\fBx\fR and \fBX\fR) notation. The letters \fBabcdef\fR 
-are used for \fBx\fR conversion and the letters \fBABCDEF\fR are used for \fBX\fR
-conversion. If precision is present, it will give the minimum number of digits that 
-must appear; if the converted value requires fewer digits, then it will be padded with 
-zeros. By default the precision is 1.
-
-.IP \fBc\fR
-The \fIint\fR argument is converted to an \fIunsigned char\fR and the resulting character is written. The representation of characters is based off the ASCII coding.
-
-.IP \fBs\fR
-The argument received is expected to be a pointer type \fIchar *\fR to an array of characters.
-Characters from this array are printed up to (but not including) a null byte \ ('\\0'). 
-If precision is specified, then this will determine how many characters are taken into 
-account for printing.
-
-.IP \fBp\fR
-A \fIvoid *\fR pointer argument is printed as hexadecimal in lower caps representing 
-an adress in memory.
-
-.IP \fB%\fR
-A \fB\ ' %\ '\fR character is written and no conversion is made. The specification is 
-as follows: \fB%%\fR.
-
-.IP \fBb\fR
-The argument is converted to an \fIunsigned int\fR value and then operated to get its 
-binary representation (base 2).
-
-.IP \fBS\fR
-The argument received is expected to be a pointer type \fIchar *\fR to an array of characters.
-Characters from this array are printed up to (but not including) a null byte \ ('\\0'). 
-Non printable characters (0 < ASCII value < 32 or >= 127) are printed this way: \fB\\\fR\fBx\fR, followed by the ASCII code value in hexadecimal (upper case - always 2 characters).
-
-Example:  _printf("%S\n", "Alx\nSchool");
-
-Output: Alx\x0ASchool.
-
-.IP \fBr\fR
-The argument received is expected to be a pointer type \fIchar *\fR to an array of characters.
-Characters from this array are printed in reverse order up to (but not including) a null byte \ ('\\0').
-
-.IP \fBR\fR
-The argument received is expected to be a pointer type \fIchar *\fR to an array of characters.
-Characters from this array are encoded to ROT13 and printed in order up to (but not including a null byte \ ('\\0').
+If an output error is encountered, a negative value (-1) is returned.
 
 
-.SH EXAMPLES
-
-
-#include <limits.h>
-
-#include "main.h"
-
+.SH EXAMPLES:
+.RS
+.SS --------------
+.I
+.SS Character[%c]:
+.RS
+.SS --------------
+.SS Input         _printf("This is a char: [%c]", 'C');
+.SS Output	   This is a char: [C]
+.SS --------------
+.I
+.SS Literal String:
+.RS
+.SS --------------
+.SS Input	 _printf("Let's try to printf a simple sentence");
+.SS Output	  Let's try to printf a simple sentence
+.SS --------------
+.I
+.SS Integers[%i]:
+.RS
+.SS --------------
+.SS Input	 _printf("This is a number: [%i]", 20);
+.SS Output	  This is a number: [20]
+.SS --------------
 .RE
 
-\fBint main()\fR
-
-{
-
-    int len;
-    unsigned int ui;
-    void *addr;
-    int n = 12;
-    ui = (unsigned int)INT_MAX + 1024;
-    addr = (void *)0x7ffe637541f0;
-
-    len = \fB_printf(\fR"Let's try to printf a simple sentence.\n"\fB)\fR;
-
-    \fB_printf(\fR"Length:[\fB%d\fR, \fB%i\fR]\n", len, len\fB)\fR;
-    \fB_printf(\fR"Negative:[\fB%d\fR]\n", -762534\fB)\fR;
-    \fB_printf(\fR"Unsigned:[\fB%u\fR]\n", ui\fB)\fR;
-    \fB_printf(\fR"Unsigned octal:[\fB%o\fR]\n", ui\fB)\fR;
-    \fB_printf(\fR"Unsigned hexadecimal:[\fB%x\fR, \fB%X\fR]\n", ui, ui\fB)\fR;
-    \fB_printf(\fR"Unsigned binary:[\fB%b\fR]\n", n\fB)\fR;
-    \fB_printf(\fR"Character:[\fB%c\fR]\n", 'H'\fB)\fR;
-    \fB_printf(\fR"String:[\fB%s\fR]\n", "I am a string !"\fB)\fR;
-    \fB_printf(\fR"String No Special:[\fB%s\fR]\n", "I am\na string !"\fB)\fR;
-    \fB_printf(\fR"String Reversed:[\fB%r\fR]\n", "I am a string !"\fB)\fR;
-    \fB_printf(\fR"String Rot 13:[\fB%R\fR]\n", "I am a string !"\fB)\fR;
-    \fB_printf(\fR"Address:[\fB%p\fR]\n", addr\fB)\fR;
-
-    len = \fB_printf(\fR"Percent:[\fB%%\fR]\n"\fB)\fR;
-
-    \fB_printf(\fR"Len:[\fB%d\fR]\n", len\fB)\fR;
-    \fB_printf(\fR"Unknown:[\fB%y\fR]\n"\fB)\fR;
-
-
-
-    \fB_printf(\fR"Plus Sign Pos Number:[%+d]\n", 54\fB)\fR;
-    \fB_printf(\fR"Plus Sign Neg Number:[%+d]\n", -54\fB)\fR;
-
-    \fB_printf(\fR"Space Pos Number:[% d]\n", 54\fB)\fR;
-    \fB_printf(\fR"Space Neg Number:[% d]\n", -54\fB)\fR;
-
-    \fB_printf(\fR"# Hexadecimal:[%#x]\n", 123\fB)\fR;
-    \fB_printf(\fR"# Octal:[%#o]\n", 123\fB)\fR;
-
-    return 0;
-
-}
-
-\fBOutput:\fR
-
-\fBLet's try to printf a simple sentence.\fR
-
-\fBLength:\fR[39, 39]
-
-\fBNegative:\fR[-762534]
-
-\fBUnsigned:\fR[2147484671]
-
-\fBUnsigned octal:\fR[20000001777]
-
-\fBUnsigned hexadecimal:\fR[800003ff, 800003FF]
-
-\fBUnsigned binary\fR:[1100]
-
-\fBCharacter:\fR[H]
-
-\fBString:\fR[I am a string !]
-
-\fBString No Special:\fR[I am\x0Aa string !]
-
-\fBString Reversed:\fR[! gnirts a ma I]
-
-\fBString Rot 13:\fR[V nz n fgevat !]
-
-\fBAddress:\fR[0x7ffe637541f0]
-
-\fBAddress:\fR[0x7ffe637541f0]
-
-\fBLen:\fR[12]
-
-\fBUnknown:\fR[%y]
-
-\fBPlus Sign Pos Number:\fR[+54]
-
-\fBPlus Sign Neg Number:\fR[-54]
-
-\fBSpace Pos Number:\fR[ 54]
-
-\fBSpace Neg Number:\fR[-54]
-
-\fB# Hexadecimal:\fR[0x7B]
-
-\fB# Octal:\fR[0173]
-
-
+.SH SEE ALSO
+.I printf(3)
 .SH BUGS
-
-The field width and precision modifiers are still in development, so there may be flaws with their functions. The flags (-) and (0) are yet to be implemented.
-
+Report _printf Prince Solomon (prince_solomon@yahoo.com)
 .SH AUTHORS
-Prince Solomon
+Prince Solomon ALX Cohort 11.
