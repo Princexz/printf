@@ -223,6 +223,42 @@ The most important functions are presented:
 _printf
 
 
+## **Flowchart**
+
+Here is a diagram of the general behaviour of the _printf.
+
+The most important functions are presented:
+
+_printf
+
+![_printf](https://i.imgur.com/nOO6dKj.png)
+
+Generate malloc
+
+![Generate Malloc](https://i.imgur.com/oqukAVN.png)
+
+## **Bugs**
+
+The field width and precision modifiers are still in development, so there may be flaws with their functions.
+The flags (-) and (0) are yet to be implemented.## **Flowchart**
+
+Here is a diagram of the general behaviour of the _printf.
+
+The most important functions are presented:
+
+_printf
+
+![_printf](https://i.imgur.com/nOO6dKj.png)
+
+Generate malloc
+
+![Generate Malloc](https://i.imgur.com/oqukAVN.png)
+
+## **Bugs**
+
+The field width and precision modifiers are still in development, so there may be flaws with their functions.
+The flags (-) and (0) are yet to be implemented.
+
 
 ## Author :black_nib:
 
