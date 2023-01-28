@@ -1,7 +1,7 @@
 ### These are the names of the Contributors to this github repository
 
 * **Prince Solomon** [Prince's github](https://github.com/princexz)
-* **Folawiyo Temitope Farouq** [Folawiyo's github](https://github.com/FAROUQ29)
+* **Folawiyo Temitope Farouq** [Folawiyo's github](https://github.com/FolawiyoFarouq)
 
 # To Contribute on This Project
 1. Fork the Repository.
