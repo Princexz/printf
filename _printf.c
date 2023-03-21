@@ -1,66 +1,79 @@
-#include "main.h"
-
-void print_buffer(char buffer[], int *buff_ind);
-
+#include "holberton.h"
+void _print_string(char *s);
+void _free(char *a, char *b);
 /**
- * _printf - Printf function
- * @format: format.
- * Return: Printed chars.
- */
+* _printf - A function that prints formatted text
+* @format: Character string
+* Return: number of chars printed
+*/
 int _printf(const char *format, ...)
 {
-	int i, printed = 0, printed_chars = 0;
-	int flags, width, precision, size, buff_ind = 0;
-	va_list list;
-	char buffer[BUFF_SIZE];
+	va_list args;
+	unsigned int fmt_i, dest_i, i; /* string iterators */
+	char *fmt_spec, *cnvrtd_str, dest_buff[1024]; /* string to return */
 
-	if (format == NULL)
+	if (!format)
 		return (-1);
-
-	va_start(list, format);
-
-	for (i = 0; format && format[i] != '\0'; i++)
+	va_start(args, format);
+	for (fmt_i = dest_i = 0; format[fmt_i]; fmt_i++, dest_i++)
 	{
-		if (format[i] != '%')
+		if ((format[fmt_i] == '%') && (format[fmt_i + 1] != '%'))/* check for '%' */
 		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			/* write(1, &format[i], 1);*/
-			printed_chars++;
-		}
-		else
-		{
-			print_buffer(buffer, &buff_ind);
-			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
-			size = get_size(format, &i);
-			++i;
-			printed = handle_print(format, &i, list, buffer,
-				flags, width, precision, size);
-			if (printed == -1)
+			if (format[fmt_i + 1] == '\0')
+			{
+				dest_buff[dest_i] = '\0';
+				_print_string(dest_buff);
 				return (-1);
-			printed_chars += printed;
+			}
+			fmt_spec = cpy_fmt_spec(&format[fmt_i]); /* copy fmt spec to new str */
+			if (fmt_spec) /* if valid specifier, send to mnger to retrieve fp */
+			{
+				cnvrtd_str = fmt_mngr(args, fmt_spec);
+				if (!cnvrtd_str)
+					return (-1);
+				for (i = 0; cnvrtd_str[i]; i++, dest_i++)
+					dest_buff[dest_i] = cnvrtd_str[i];
+				dest_i--;
+				fmt_i += _strlen(fmt_spec) - 1;
+			}
+			else
+				dest_buff[dest_i] = format[fmt_i];
 		}
+		else if ((format[fmt_i] == '%') && (format[fmt_i + 1] == '%'))
+			dest_buff[dest_i] = format[++fmt_i];
+		else
+			dest_buff[dest_i] = format[fmt_i];
 	}
-
-	print_buffer(buffer, &buff_ind);
-
-	va_end(list);
-
-	return (printed_chars);
+	va_end(args);/* free args*/
+	dest_buff[dest_i] = '\0';/* place null byte at end of dest*/
+	_print_string(dest_buff);
+	_free(fmt_spec, cnvrtd_str);
+	return (_strlen(dest_buff));
 }
 
 /**
- * print_buffer - Prints the contents of the buffer if it exist
- * @buffer: Array of chars
- * @buff_ind: Index at which to add next char, represents the length.
+ * _free - free multiple buffers
+ * @a: string to free
+ * @b: string to free
  */
-void print_buffer(char buffer[], int *buff_ind)
+void _free(char *a, char *b)
 {
-	if (*buff_ind > 0)
-		write(1, &buffer[0], *buff_ind);
+	if (a)
+		free(a);
+	if (b)
+		free(b);
+}
+/**
+ * _print_string - print string
+ * @s: string to print
+ */
+void _print_string(char *s)
+{
+	int i = 0;
 
-	*buff_ind = 0;
+	while (s[i])
+	{
+		write(1, &s[i], 1);
+		i++;
+	}
 }

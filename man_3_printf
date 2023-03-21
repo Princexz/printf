@@ -1,87 +1,75 @@
-.TH _printf 1 "January 26, 2023" "version 1.0" "_printf man page"
+.TH _PRINTF 3 2019-10-29 Linux "Linux Programmer's Manual"
 .SH NAME
-_printf - format and print data
+.B _printf 
+- print formatted strings
 .SH SYNOPSIS
-#include <unistd.h> <stdarg.h> <stdlib.h> "main.h"
-
-int printf(const char *format, ...);
-
+.B #include """holberton.h""" 
+.PP
+.B int _printf(const char *\fIformat, ...\fR);
 .SH DESCRIPTION
-function that produces output according to a format.  Writes the output under the control of a format string that specifies how subsequent arguments (or arguments accessed via the variable-length argument facilities of stdarg(3)) are converted for output.  Execute according to option:
+ The _printf function will print formatted string to the standard output. _printf is a variadic function, receiving a variable number of arguments (...) and converting, formatting, and printing them according to format specifiers described in the function's one mandatory argument (format). For defined behavior, each format specifier outlined in the format argument should correlate to a following argument. With this formatting information, the function determines the incoming argument's data type and selects a further function for the argument's conversion.
+.PP
 
-.I
-.SS CONVERSION SPECIFIERS:
-.RS
+.B Return Value
+.PP
+If successful, _printf will return the number of characters printed, excluding the null-byte. If an error is encounted, the return value will be -1.
+.PP
+.SH Conversion Specifiers
+.PP
+Conversion specifiers dictate to the print function which type of conversion is to be enacted upon an input argument before printing. Conversion specifiers appear as the final character in a format specifier pattern. 
+.PP
+% | initiates a format specifier pattern (escaped with '\' or '%' - ex. '%%')
+.PP
+c | prints a single char
+.PP
+s | prints a character pointer (string) 
+.PP
+d | prints a decimal
+.PP
+i | prints an integer
+.PP
+u | prints an unsigned integer
+.PP
+r | prints a reversed string
+.PP
+R | encodes and prints a string in rot13
+.PP
+.SH Supported Length Modifiers 
+.PP
+    Length modifiers signify that the following conversion will receive a value stored in a long or short data type.
+.PP
+l | long int for d, i; unsigned long int for u
+.PP
+h | short in for d, i | unsigned short int for u
+.PP
+.SH EXAMPLE
+.PP
+To print the string "Hello, Holberton!" followed by a new line:
+.PP
+	#include "holberton.h"
+.PP
+	_printf("Hello, Holberton!\\n");
+.PP
 
-A character that specifies the type of conversion to be applied. The conversion specifiers and their meanings are:
+To print a date and time in the form "Wednesday, October 29th, 2019", followed by a new line, where day and month are pointers to strings, and date and year are int variables:
+.PP
+	#include "holberton.h"
+.PP
+	_printf("%s, %s %dth, %d\\n", day, month, date, year);
+.PP
 
-.IP d,i
-Decimal signed integer. The int argument is converted to signed decimal notation. 
-
-.IP c
-Character. The int argument is converted to an unsigned char, and the resulting character is written.
-
-.IP s
-The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but not including) a terminating null byte ('\0').
-
-.IP o,u,x,X
-The unsigned int argument is converted to unsigned octal (o), unsigned decimal (u), or unsigned hexadecimal (x and X) notation. The letters abcdef are used for x conversions; the letters ABCDEF are used for X conversions.
-
-.IP p
-The void * pointer argument is printed in hexadecimal (as if by %#x or %#lx).
-
-.I
-.SS CUSTOM CONVERSION SPECIFIERS
-.RS
-
-.IP b
-Decimal signed integer. The int argument is converted to binary notation.
-
-.IP r
-The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but n\ot including) a terminating null byte ('\0') in reverse order.
-
-
-.IP R
-The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but n\
-\ot including) a terminating null byte ('\0') in ROT13 format.
-
-
-.SH RETURN VALUE
-.RS
-Upon successful return, these functions return the number of characters printed (excluding the null byte used to end output to strings).
-
-If an output error is encountered, a negative value (-1) is returned.
-
-
-.SH EXAMPLES:
-.RS
-.SS --------------
-.I
-.SS Character[%c]:
-.RS
-.SS --------------
-.SS Input         _printf("This is a char: [%c]", 'C');
-.SS Output	   This is a char: [C]
-.SS --------------
-.I
-.SS Literal String:
-.RS
-.SS --------------
-.SS Input	 _printf("Let's try to printf a simple sentence");
-.SS Output	  Let's try to printf a simple sentence
-.SS --------------
-.I
-.SS Integers[%i]:
-.RS
-.SS --------------
-.SS Input	 _printf("This is a number: [%i]", 20);
-.SS Output	  This is a number: [20]
-.SS --------------
-.RE
-
+To print "Hello, Holberton!" in reverse, followed by a new line, use the custom conversion specifier r:
+.PP
+	#include "holberton.h"
+.PP
+	char *string = "Hello Holberton!";
+.PP
+	_printf("%r\\n", string);
+.PP
+Expected output: "!notrebloH olleH"
+.PP 
 .SH SEE ALSO
-.I printf(3)
-.SH BUGS
-Report _printf Prince Solomon (prince_solomon@yahoo.com)
+.B printf(3), printf(1)
+.PP
 .SH AUTHORS
-Prince Solomon ALX Cohort 11.
+Justin Majetich & Kati Fredlund
