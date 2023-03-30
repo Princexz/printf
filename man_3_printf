@@ -1,0 +1,75 @@
+.TH _PRINTF 3 2019-10-29 Linux "Linux Programmer's Manual"
+.SH NAME
+.B _printf 
+- print formatted strings
+.SH SYNOPSIS
+.B #include """holberton.h""" 
+.PP
+.B int _printf(const char *\fIformat, ...\fR);
+.SH DESCRIPTION
+ The _printf function will print formatted string to the standard output. _printf is a variadic function, receiving a variable number of arguments (...) and converting, formatting, and printing them according to format specifiers described in the function's one mandatory argument (format). For defined behavior, each format specifier outlined in the format argument should correlate to a following argument. With this formatting information, the function determines the incoming argument's data type and selects a further function for the argument's conversion.
+.PP
+
+.B Return Value
+.PP
+If successful, _printf will return the number of characters printed, excluding the null-byte. If an error is encounted, the return value will be -1.
+.PP
+.SH Conversion Specifiers
+.PP
+Conversion specifiers dictate to the print function which type of conversion is to be enacted upon an input argument before printing. Conversion specifiers appear as the final character in a format specifier pattern. 
+.PP
+% | initiates a format specifier pattern (escaped with '\' or '%' - ex. '%%')
+.PP
+c | prints a single char
+.PP
+s | prints a character pointer (string) 
+.PP
+d | prints a decimal
+.PP
+i | prints an integer
+.PP
+u | prints an unsigned integer
+.PP
+r | prints a reversed string
+.PP
+R | encodes and prints a string in rot13
+.PP
+.SH Supported Length Modifiers 
+.PP
+    Length modifiers signify that the following conversion will receive a value stored in a long or short data type.
+.PP
+l | long int for d, i; unsigned long int for u
+.PP
+h | short in for d, i | unsigned short int for u
+.PP
+.SH EXAMPLE
+.PP
+To print the string "Hello, Holberton!" followed by a new line:
+.PP
+	#include "holberton.h"
+.PP
+	_printf("Hello, Holberton!\\n");
+.PP
+
+To print a date and time in the form "Wednesday, October 29th, 2019", followed by a new line, where day and month are pointers to strings, and date and year are int variables:
+.PP
+	#include "holberton.h"
+.PP
+	_printf("%s, %s %dth, %d\\n", day, month, date, year);
+.PP
+
+To print "Hello, Holberton!" in reverse, followed by a new line, use the custom conversion specifier r:
+.PP
+	#include "holberton.h"
+.PP
+	char *string = "Hello Holberton!";
+.PP
+	_printf("%r\\n", string);
+.PP
+Expected output: "!notrebloH olleH"
+.PP 
+.SH SEE ALSO
+.B printf(3), printf(1)
+.PP
+.SH AUTHORS
+Justin Majetich & Kati Fredlund
